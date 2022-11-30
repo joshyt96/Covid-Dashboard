@@ -5,4 +5,4 @@ I hope this works
 
 This is to check that cloning is working correctly.
 Another test
-Testing SSH
+Testing SSH and terminal
