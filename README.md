@@ -1,8 +1,7 @@
 # Covid-Dashboard
-Class Project
-This is to test that Trevor has his Git installed/setup correctly
-I hope this works
+COVID Dashboard
+by: Trevor, Elle, Josh
 
-This is to check that cloning is working correctly.
-Another test
-Testing SSH and terminal
+This program scrapes data from (Insert URL here) and displays it in a GUI for easy reading and interpretation. 
+
+(Insert program description here)
