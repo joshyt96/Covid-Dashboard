@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup 
 import json
 import pandas as pd
+from datetime import date
 
 # Create an URL object, used to make a page object
 url = 'https://www.worldometers.info/coronavirus/'
@@ -46,6 +47,7 @@ wantedDataDF = mydata.iloc[:224,0:5]
 #Convert the dataframe to a dictionary with the country name set for keys
 dataDict = wantedDataDF.set_index('Country,Other').T.to_dict('list')
 
-# Take the created dictionary and save it as a .json file
-with open('countryData.json','w') as f:
-    json.dump(dataDict, f)
+# Take the created dictionary and save it as a .json file with today's date
+today = str(date.today())
+with open(f'{today}.table.json','w') as f:
+    json.dump(dataDict,f)
