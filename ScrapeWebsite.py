@@ -63,12 +63,9 @@ def scrape_country(country,url):
         newDeaths = int(countryData[3].replace('+',''))
     totalDeathsPerMil = totalDeaths/popMil
     newDeathsPerMil = newDeaths/popMil
-    
-    countryInfo = ['Country: ' + country, 
-                   'Cumulative deaths: ' + str(totalDeaths), 
-                   'Cumulative deaths per million: ' + str(totalDeathsPerMil),
-                   'New deaths today: ' + str(newDeaths),
-                   'New deaths today per million: ' + str(newDeathsPerMil)]
+    # create a list called countryInfo, which contains these elements in this order:
+    # [cumulative deaths, cumulative deaths per million, new deaths today, new deaths today per million]
+    countryInfo = [totalDeaths, totalDeathsPerMil, newDeaths, newDeathsPerMil]
     return countryInfo
     
     
