@@ -4,6 +4,7 @@ import json
 import pandas as pd
 from datetime import date
 
+
 # Create an URL object, used to make a page object
 #reate object page
 def scrape_country(url,country):
