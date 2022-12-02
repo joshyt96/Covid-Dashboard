@@ -49,15 +49,15 @@ def scrape_country(url,country):
 
     # Take the created dictionary and save it as a .json file with today's date
     today = str(date.today())
-    with open(f'{today}.table.json','w') as f:
+    with open(f'{today}-table.json','w') as f:
         json.dump(dataDict,f)
         
     countryData = dataDict[country]
-    totalDeaths = int(countryData[2].replace(',',''))/1000000
-    #totalDeaths = int(totalDeathsStr)/1000000
-    newDeaths = countryData[3].replace('x','')
+    
+    totalDeaths = int(countryData[2].replace(',',''))
+    newDeaths = int(countryData[3].replace('+',''))
     
     print(country + "\n" + "Total deaths (Per 1 Million):" + str(totalDeaths))
     print("Reported deaths today (" + today + '):' + newDeaths)
     
-scrape_country('https://www.worldometers.info/coronavirus/#countries','USA')
+scrape_country('https://www.worldometers.info/coronavirus/#countries','S. Korea')
