@@ -1,6 +1,8 @@
 import ScrapeWebsite
 import datetime
+from ScrapeWebsite import scrape_country
 
 Country = 'USA'
 Website = 'https://www.worldometers.info/coronavirus/#countries'
-#scrape_country(Country,Website)
+covid_info_dict = scrape_country(Country,Website)
+print(covid_info_dict)
