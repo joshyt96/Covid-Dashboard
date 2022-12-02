@@ -7,7 +7,7 @@ from datetime import date
 
 # Create an URL object, used to make a page object
 #reate object page
-def scrape_country(url,country):
+def scrape_country(country,url):
     page = requests.get(url)
 
     # Use lxml to make the HTML in a Python ready format
@@ -55,10 +55,21 @@ def scrape_country(url,country):
         
     countryData = dataDict[country]
     
+    popMil = int(countryData[12].replace(',',''))/1000000
     totalDeaths = int(countryData[2].replace(',',''))
-    newDeaths = int(countryData[3].replace('+',''))
+    if countryData[3] == '':
+        newDeaths = 0
+    else:
+        newDeaths = int(countryData[3].replace('+',''))
+    totalDeathsPerMil = totalDeaths/popMil
+    newDeathsPerMil = newDeaths/popMil
     
-    print(country + "\n" + "Total deaths (Per 1 Million):" + str(totalDeaths))
-    print("Reported deaths today (" + today + '):' + newDeaths)
+    countryInfo = ['Country: ' + country, 
+                   'Cumulative deaths: ' + str(totalDeaths), 
+                   'Cumulative deaths per million: ' + str(totalDeathsPerMil),
+                   'New deaths today: ' + str(newDeaths),
+                   'New deaths today per million: ' + str(newDeathsPerMil)]
+    return countryInfo
     
-scrape_country('https://www.worldometers.info/coronavirus/#countries','S. Korea')
+    
+#scrape_country('Indonesia','https://www.worldometers.info/coronavirus/#countries')
