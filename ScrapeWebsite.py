@@ -1,50 +1,64 @@
-from requests_html import HTMLSession
+import requests
+from bs4 import BeautifulSoup 
 import json
+import pandas as pd
 from datetime import date
-URL = 'https://www.worldometers.info/coronavirus/#countries'
 
-def scrape_country(country, website):
-    # Scrapes data from the website for all countries, and puts all of the info into a .json file,
-    # then searches the .json file for the specified country. The new deaths and cumulative deaths
-    # (both raw values and normalized per million people) are stored in a dictionary called "crunchy" 
-    s = HTMLSession()
-    r = s.get(website)
 
-    table = r.html.find('table')[0]
-    # Organizes data into a header and its data
-    tableheader = [[c.text for c in row.find('th')[:-1]] for row in table.find('tr')][0]
-    tabledata = [[c.text for c in row.find('td')[:-1]] for row in table.find('tr')][1:]
-    res = [dict(zip(tableheader,t)) for t in tabledata]
-    # Sends the data into a json file with today's date as the title
+# Create an URL object, used to make a page object
+#reate object page
+def scrape_country(url,country):
+    page = requests.get(url)
+
+    # Use lxml to make the HTML in a Python ready format
+    soup = BeautifulSoup(page.text, 'lxml')
+
+    #Pulls the table that tracks todays COVID data
+    table1 = soup.find('table', id='main_table_countries_today')
+
+    # Obtain every title of columns with tag <th>
+    headers = []
+    for i in table1.find_all('th'):
+        title = i.text
+        headers.append(title)
+ 
+    # Convert wrapped text in column 13 into one line text
+    headers[13] = 'Tests/1M pop'
+
+    # Create a Pandas dataframe
+    mydata = pd.DataFrame(columns = headers)
+
+    # Create a for loop to fill mydata
+    for j in table1.find_all('tr')[1:]:
+        row_data = j.find_all('td')
+        row = [i.text for i in row_data]
+        length = len(mydata)
+        mydata.loc[length] = row
+
+    # Drop and clearing unnecessary rows
+    mydata.drop(mydata.index[0:7], inplace=True)
+    mydata.drop(mydata.index[222:229], inplace=True)
+    mydata.reset_index(inplace=True, drop=True)
+    # Drop “#” column
+    mydata.drop('#', inplace=True, axis=1)
+
+    #Trim down the dataframe to only columns we need for the project
+    wantedDataDF = mydata.iloc[:224]
+
+    #Convert the dataframe to a dictionary with the country name set for keys
+    dataDict = wantedDataDF.set_index('Country,Other').T.to_dict('list')
+
+    # Take the created dictionary and save it as a .json file with today's date
     today = str(date.today())
-    with open(f'{today}.table.json','w') as f:
-        json.dump(res,f,indent = 4)
+    with open(f'{today}-table.json','w') as f:
+        json.dump(dataDict,f)
         
-    with open(f'{today}.table.json','r') as k:
-        data = json.load(k)
-        
-    for i in range(8,237):
-        # find the data for the country of interest
-        if data[i]['Country,\nOther'] == country:
-            # once we find the country, put the desired info into a dictionary called "crunchy"
-            crunchy = {}
-            crunchy['Country'] = data[i]['Country,\nOther']
-            crunchy['Total Deaths'] = data[i]['Total\nDeaths'].replace(',','')
-            crunchy['Population'] = data[i]['Population'].replace(',','')
-            pop_mils = float(crunchy['Population'])/1000000
-            crunchy['Total Deaths per 1M people'] = float(crunchy['Total Deaths'])/pop_mils
-            crunchy['New Deaths'] = data[i]['New\nDeaths'].replace(',','').replace('+','')
-            if crunchy['New Deaths'] == '':
-                crunchy['New Deaths'] = '0'
-            crunchy['New Deaths per 1M people'] = float(crunchy['New Deaths'])/pop_mils
-            break
-        else:
-            pass   
-    return crunchy
-                
-#country.lower()
-
-
-
-
-
+    countryData = dataDict[country]
+    
+    totalDeaths = int(countryData[2].replace(',',''))
+    newDeaths = int(countryData[3].replace('+',''))
+    
+    print(country + "\n" + "Total deaths (Per 1 Million):" + str(totalDeaths))
+    print("Reported deaths today (" + today + '):' + newDeaths)
+    
+scrape_country('https://www.worldometers.info/coronavirus/#countries','S. Korea')
