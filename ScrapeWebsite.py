@@ -48,7 +48,7 @@ def scrape_country(country,url):
     #Convert the dataframe to a dictionary with the country name set for keys
     dataDict = wantedDataDF.set_index('Country,Other').T.to_dict('list')
 
-    # Take the created dictionary and save it as a .json file with today's date
+     # Take the created dictionary and save it as a .json file with today's date
     today = str(date.today())
     with open(f'{today}-table.json','w') as f:
         json.dump(dataDict,f)
@@ -68,5 +68,5 @@ def scrape_country(country,url):
     countryInfo = [totalDeaths, totalDeathsPerMil, newDeaths, newDeathsPerMil]
     return countryInfo
     
-    
+#This is a test for our function    
 #scrape_country('Indonesia','https://www.worldometers.info/coronavirus/#countries')
