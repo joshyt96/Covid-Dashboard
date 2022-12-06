@@ -1,5 +1,7 @@
 import ScrapeWebsite
 import datetime
+import pandas as pd
+import numpy as np
 from ScrapeWebsite import scrape_country
 
 Country = 'New Zealand'
