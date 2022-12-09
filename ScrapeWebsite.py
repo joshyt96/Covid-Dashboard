@@ -15,7 +15,9 @@ def scrape_country(country,url):
 
     #Pulls the table that tracks todays COVID data
     table1 = soup.find('table', id='main_table_countries_today')
-
+    # table2 = soup.find('table', id='main_table_countries_yesterday')
+    # table3 = soup.find('table', id='main_table_countries_yesterday2')
+    
     # Obtain every title of columns with tag <th>
     headers = []
     for i in table1.find_all('th'):
