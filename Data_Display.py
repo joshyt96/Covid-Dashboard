@@ -93,6 +93,7 @@ W.js_on_change("value", CustomJS(code="""
                                                 # I was also thinking about making a dictionary for yesterday and yesterday2
                                                 # I already got the tables just didnt deal with json
                                                 # See scrape_data_experiments
+                                                # Add a legend
 source = ColumnDataSource(data=dict(
     x=[1, 2, 3, 4, 5],          # Dictionary for today yesterday and yesterday2
     y1=[1, 2, 4, 3, 4],         # Data for New cases
