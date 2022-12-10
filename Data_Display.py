@@ -23,6 +23,7 @@ country_covid_info = scrape_country(Country,Website)
 # Retreive the Dictionary from the Json
 today = str(date.today())
 toad = today.split('-')
+today = datetime.date(int(toad[0]),int(toad[1]),int(toad[2]))
 yesterday = datetime.date(int(toad[0]),int(toad[1]),int(toad[2])-1)
 twodays = datetime.date(int(toad[0]),int(toad[1]),int(toad[2])-2)
 
@@ -46,6 +47,7 @@ data = {'Countries' : Countries,
         'Recovered Cases'   : [5, 3, 4, 2, 4, 6]}
 S = figure(x_range=Countries, height=250, title="Case Results by Country",
            toolbar_location=None, tools="hover", tooltips="$name @Countries: @$name")
+S.xaxis.major_label_orientation = np.pi/4
 colors = ['#FF0000','#008000']
 S.vbar_stack(Rates, x='Countries', width=0.9, color=colors, source=data,
              legend_label=Rates)
@@ -94,15 +96,17 @@ W.js_on_change("value", CustomJS(code="""
                                                 # I already got the tables just didnt deal with json
                                                 # See scrape_data_experiments
                                                 # Add a legend
+
 source = ColumnDataSource(data=dict(
-    x=[1, 2, 3, 4, 5],          # Dictionary for today yesterday and yesterday2
-    y1=[1, 2, 4, 3, 4],         # Data for New cases
-    y2=[1, 4, 2, 2, 3],         # Data for New deaths
+    #x=[str(twodays), str(yesterday), str(today)],          # I cent seem to get it to work with strings or datetime variables
+    x =[0, 1, 2],
+    y1=[1, 2, 4],         # Data for New cases
+    y2=[1, 4, 2],         # Data for New deaths
 ))
-I = figure(width=400, height=400)
+I = figure(width=400, height=400, x_axis_label='Date')      # x_axis_type = datetime
 
 I.vline_stack(['y1', 'y2'], x='x', source=source)
-
+#show(I)
 
 
 grid = gridplot([[P,I],[S,W]])
