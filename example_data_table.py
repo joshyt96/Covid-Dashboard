@@ -6,6 +6,7 @@ from bokeh.layouts import column
 from bokeh.models import (ColumnDataSource, DataTable, HoverTool, IntEditor,
                           NumberEditor, NumberFormatter, SelectEditor,
                           StringEditor, StringFormatter, TableColumn)
+
 from bokeh.plotting import figure, show
 from bokeh.sampledata.autompg2 import autompg2 as mpg
 
