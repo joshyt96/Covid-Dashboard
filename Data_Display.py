@@ -38,13 +38,35 @@ twodaysDictionary = json.load(f3)
 f3.close()    
 
 # Plot the Static Plot
-    # Countries = list(Dictionary.keys())
-Countries = ['Apples', 'Pears', 'Nectarines', 'Plums', 'Grapes', 'Strawberries']
-Rates = ["Death Cases", "Recovered Cases"]
+#Countries = ['Apples', 'Pears', 'Nectarines', 'Plums', 'Grapes', 'Strawberries']
+
+#f = open('2022-12-08-table.json')
+#todayCountryData = json.load(f)
+#Make a list of all the country names
+Countries = list(Dictionary.keys())
+Countries.remove('World')
+
+##### ADD MULTICHOICE WIDGET HERE
+W = MultiChoice(value=["New Zealand", "Pakistan"], options=Countries,max_items = 5,search_option_limit = 20,
+                title = 'Choose up to 5 countries:')                      # not sure what value section does
+W.js_on_change("value", CustomJS(code="""
+    console.log('W: value=' + this.value, this.toString())"""))
+
+####################################
+ 
+tot_cases = []
+tot_recov = []
+for m in Countries:
+    if Dictionary[m][4] == '':
+        Dictionary[m][4] = '0'
+    tot_cases.append(int(Dictionary[m][0].replace(',','')))
+    tot_recov.append(int(Dictionary[m][4].replace(',','').replace('N/A','0')))
+
+Rates = ["Total Cases", "Recovered Cases"]
                                                     # data with country title, the death cases and the recovered cases
 data = {'Countries' : Countries,
-        'Death Cases'   : [2, 1, 4, 3, 2, 4],
-        'Recovered Cases'   : [5, 3, 4, 2, 4, 6]}
+        'Total Cases'  : tot_cases,
+        'Recovered Cases' : tot_recov}
 S = figure(x_range=Countries, height=250, title="Case Results by Country",
            toolbar_location=None, tools="hover", tooltips="$name @Countries: @$name")
 S.xaxis.major_label_orientation = np.pi/4
@@ -74,7 +96,7 @@ x = {
 data = pd.Series(x).reset_index(name='value').rename(columns={'index': 'country'})
 data['angle'] = data['value']/data['value'].sum() * 2*pi
 data['color'] = Category20c[len(x)]
-P = figure(height=350, title="Percent of Cases", toolbar_location=None,
+P = figure(height=400, title="Percent of Cases", toolbar_location=None,
            tools="hover", tooltips="@country: @value%", x_range=(-0.5, 1.0))
 P.wedge(x=0, y=1, radius=0.4,
         start_angle=cumsum('angle', include_zero=True), end_angle=cumsum('angle'),
@@ -83,15 +105,8 @@ P.axis.visible = False
 P.grid.grid_line_color = None
 
 
-# Widget
-OPTIONS = list(Dictionary.keys())
-
-W = MultiChoice(value=["foo", "baz"], options=OPTIONS)                      # not sure what value section does
-W.js_on_change("value", CustomJS(code="""
-    console.log('W: value=' + this.value, this.toString())"""))
-
 # Interactive plot
-                                                # We need the plot to somehow incorperate the widget
+                                                # We need the plot to somehow incorporate the widget
                                                 # I was also thinking about making a dictionary for yesterday and yesterday2
                                                 # I already got the tables just didnt deal with json
                                                 # See scrape_data_experiments
