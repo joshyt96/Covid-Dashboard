@@ -36,7 +36,7 @@ def scrape_country(country,url):
         row = [i.text for i in row_data]
         length = len(mydata)
         mydata.loc[length] = row
-
+   
     # Drop and clearing unnecessary rows
     mydata.drop(mydata.index[0:7], inplace=True)
     mydata.drop(mydata.index[222:229], inplace=True)
@@ -49,7 +49,7 @@ def scrape_country(country,url):
 
     #Convert the dataframe to a dictionary with the country name set for keys
     dataDict = wantedDataDF.set_index('Country,Other').T.to_dict('list')
-
+    
      # Take the created dictionary and save it as a .json file with today's date
     today = str(date.today())
     with open(f'{today}-table.json','w') as f:

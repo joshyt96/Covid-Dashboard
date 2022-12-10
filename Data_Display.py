@@ -19,9 +19,12 @@ f = open(f'{today}-table.json')
 Dictionary = json.load(f)
 #f.close()
 
+#print(Dictionary['Europe'])
+
 # Turn Keys into a list
 keyes = list(Dictionary.keys())
-print(keyes[5])
-
-
+print(keyes)
+#print(range(5))
+#for i in range(5):
+#    print(keyes[i])
 
