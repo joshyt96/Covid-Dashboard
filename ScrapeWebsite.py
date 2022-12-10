@@ -51,7 +51,7 @@ def scrape_country(country,url):
      # Take the created dictionary and save it as a .json file with today's date
     today = str(date.today())
     with open(f'{today}-table.json','w') as f:
-        json.dump(dataDict,f)
+        json.dump(dataDict,f,indent = 4)
         
     countryData = dataDict[country]
     
