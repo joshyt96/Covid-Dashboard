@@ -23,17 +23,13 @@ country_covid_info = scrape_country(Country,Website)
 today = str(date.today())
 f = open(f'{today}-table.json')
 Dictionary = json.load(f)
-#f.close()
-
-#print(Dictionary['Europe'])
-
-
+f.close()
 
 # Plot the Static Plot
     # Countries = list(Dictionary.keys())
 Countries = ['Apples', 'Pears', 'Nectarines', 'Plums', 'Grapes', 'Strawberries']
 Rates = ["Death Cases", "Recovered Cases"]
-
+                                                    # data with country title, the death cases and the recovered cases
 data = {'Countries' : Countries,
         'Death Cases'   : [2, 1, 4, 3, 2, 4],
         'Recovered Cases'   : [5, 3, 4, 2, 4, 6]}
@@ -47,7 +43,7 @@ S.vbar_stack(Rates, x='Countries', width=0.9, color=colors, source=data,
 #S.legend.orientation = "horizontal"
 
 # Pie graph
-#  x = Dictionary with just country and the percent of the cases
+                                                    #  x = Dictionary with just country and the percent of the cases
 x = {
     'United States': 157,
     'United Kingdom': 93,
@@ -77,15 +73,26 @@ P.grid.grid_line_color = None
 # Widget
 OPTIONS = list(Dictionary.keys())
 
-W = MultiChoice(value=["foo", "baz"], options=OPTIONS)
+W = MultiChoice(value=["foo", "baz"], options=OPTIONS)                      # not sure what value does
 W.js_on_change("value", CustomJS(code="""
     console.log('W: value=' + this.value, this.toString())"""))
 
 # Interactive plot
+                                                # We need the plot to somehow incorperate the widget
+                                                # I was also thinking about making a dictionary for yesterday and yesterday2
+                                                # I already got the tables just didnt deal with json
+                                                # See scrape_data_experiments
+source = ColumnDataSource(data=dict(
+    x=[1, 2, 3, 4, 5],
+    y1=[1, 2, 4, 3, 4],
+    y2=[1, 4, 2, 2, 3],
+))
+I = figure(width=400, height=400)
+
+I.vline_stack(['y1', 'y2'], x='x', source=source)
 
 
 
-
-#grid = gridplot([[S,I],[P,W]]) # Widget is the select I is interactve
-#show(grid)
+grid = gridplot([[P,I],[S,W]])
+show(grid)
 
