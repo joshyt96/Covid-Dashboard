@@ -2,6 +2,7 @@ import ScrapeWebsite
 from ScrapeWebsite import scrape_country
 import json
 from math import pi
+import datetime
 from datetime import date
 import pandas as pd
 import numpy as np
@@ -21,9 +22,19 @@ country_covid_info = scrape_country(Country,Website)
 
 # Retreive the Dictionary from the Json
 today = str(date.today())
-f = open(f'{today}-table.json')
-Dictionary = json.load(f)
-f.close()
+toad = today.split('-')
+yesterday = datetime.date(int(toad[0]),int(toad[1]),int(toad[2])-1)
+twodays = datetime.date(int(toad[0]),int(toad[1]),int(toad[2])-2)
+
+f1 = open(f'{today}-table.json')
+Dictionary = json.load(f1)
+f1.close()
+f2 = open(f'{yesterday}-table.json')
+yesterdayDictionary = json.load(f2)
+f2.close()
+f3 = open(f'{twodays}-table.json')
+twodaysDictionary = json.load(f3)
+f3.close()    
 
 # Plot the Static Plot
     # Countries = list(Dictionary.keys())
