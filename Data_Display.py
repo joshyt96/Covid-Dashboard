@@ -73,7 +73,7 @@ P.grid.grid_line_color = None
 # Widget
 OPTIONS = list(Dictionary.keys())
 
-W = MultiChoice(value=["foo", "baz"], options=OPTIONS)                      # not sure what value does
+W = MultiChoice(value=["foo", "baz"], options=OPTIONS)                      # not sure what value section does
 W.js_on_change("value", CustomJS(code="""
     console.log('W: value=' + this.value, this.toString())"""))
 
@@ -83,9 +83,9 @@ W.js_on_change("value", CustomJS(code="""
                                                 # I already got the tables just didnt deal with json
                                                 # See scrape_data_experiments
 source = ColumnDataSource(data=dict(
-    x=[1, 2, 3, 4, 5],
-    y1=[1, 2, 4, 3, 4],
-    y2=[1, 4, 2, 2, 3],
+    x=[1, 2, 3, 4, 5],          # Dictionary for today yesterday and yesterday2
+    y1=[1, 2, 4, 3, 4],         # Data for New cases
+    y2=[1, 4, 2, 2, 3],         # Data for New deaths
 ))
 I = figure(width=400, height=400)
 
