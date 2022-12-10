@@ -2,6 +2,7 @@ import ScrapeWebsite
 from ScrapeWebsite import scrape_country
 import json
 from math import pi
+import datetime
 from datetime import date
 import pandas as pd
 import numpy as np
@@ -21,24 +22,32 @@ country_covid_info = scrape_country(Country,Website)
 
 # Retreive the Dictionary from the Json
 today = str(date.today())
-f = open(f'{today}-table.json')
-Dictionary = json.load(f)
-#f.close()
+toad = today.split('-')
+today = datetime.date(int(toad[0]),int(toad[1]),int(toad[2]))
+yesterday = datetime.date(int(toad[0]),int(toad[1]),int(toad[2])-1)
+twodays = datetime.date(int(toad[0]),int(toad[1]),int(toad[2])-2)
 
-#print(Dictionary['Europe'])
-
-
+f1 = open(f'{today}-table.json')
+Dictionary = json.load(f1)
+f1.close()
+f2 = open(f'{yesterday}-table.json')
+yesterdayDictionary = json.load(f2)
+f2.close()
+f3 = open(f'{twodays}-table.json')
+twodaysDictionary = json.load(f3)
+f3.close()    
 
 # Plot the Static Plot
     # Countries = list(Dictionary.keys())
 Countries = ['Apples', 'Pears', 'Nectarines', 'Plums', 'Grapes', 'Strawberries']
 Rates = ["Death Cases", "Recovered Cases"]
-
+                                                    # data with country title, the death cases and the recovered cases
 data = {'Countries' : Countries,
         'Death Cases'   : [2, 1, 4, 3, 2, 4],
         'Recovered Cases'   : [5, 3, 4, 2, 4, 6]}
 S = figure(x_range=Countries, height=250, title="Case Results by Country",
            toolbar_location=None, tools="hover", tooltips="$name @Countries: @$name")
+S.xaxis.major_label_orientation = np.pi/4
 colors = ['#FF0000','#008000']
 S.vbar_stack(Rates, x='Countries', width=0.9, color=colors, source=data,
              legend_label=Rates)
@@ -47,7 +56,7 @@ S.vbar_stack(Rates, x='Countries', width=0.9, color=colors, source=data,
 #S.legend.orientation = "horizontal"
 
 # Pie graph
-#  x = Dictionary with just country and the percent of the cases
+                                                    #  x = Dictionary with just country and the percent of the cases
 x = {
     'United States': 157,
     'United Kingdom': 93,
@@ -77,15 +86,29 @@ P.grid.grid_line_color = None
 # Widget
 OPTIONS = list(Dictionary.keys())
 
-W = MultiChoice(value=["foo", "baz"], options=OPTIONS)
+W = MultiChoice(value=["foo", "baz"], options=OPTIONS)                      # not sure what value section does
 W.js_on_change("value", CustomJS(code="""
     console.log('W: value=' + this.value, this.toString())"""))
 
 # Interactive plot
+                                                # We need the plot to somehow incorperate the widget
+                                                # I was also thinking about making a dictionary for yesterday and yesterday2
+                                                # I already got the tables just didnt deal with json
+                                                # See scrape_data_experiments
+                                                # Add a legend
+
+source = ColumnDataSource(data=dict(
+    #x=[str(twodays), str(yesterday), str(today)],          # I cent seem to get it to work with strings or datetime variables
+    x =[0, 1, 2],
+    y1=[1, 2, 4],         # Data for New cases
+    y2=[1, 4, 2],         # Data for New deaths
+))
+I = figure(width=400, height=400, x_axis_label='Date')      # x_axis_type = datetime
+
+I.vline_stack(['y1', 'y2'], x='x', source=source)
+#show(I)
 
 
-
-
-#grid = gridplot([[S,I],[P,W]]) # Widget is the select I is interactve
-#show(grid)
+grid = gridplot([[P,I],[S,W]])
+show(grid)
 

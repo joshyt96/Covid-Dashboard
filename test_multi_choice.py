@@ -3,10 +3,18 @@
 ##################################################################
 from bokeh.io import show
 from bokeh.models import CustomJS, MultiChoice
+import json
+from datetime import date
 
-OPTIONS = ["foo", "bar", "baz", "quux","ab","b","ff","fe","ji","wr","we","ef","fffff","shittttt","fuk"]
+today = str(date.today())
 
-multi_choice = MultiChoice(value=["foo", "baz"], options=OPTIONS)
+#Load today's country data
+f = open('2022-12-08-table.json')
+todayCountryData = json.load(f)
+#Make a list of all the country names
+countryOptions = list(todayCountryData.keys())
+
+multi_choice = MultiChoice(value=['USA','S. Korea'], options=countryOptions)
 multi_choice.js_on_change("value", CustomJS(code="""
     console.log('multi_choice: value=' + this.value, this.toString())"""))
 
