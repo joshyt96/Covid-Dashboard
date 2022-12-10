@@ -46,11 +46,32 @@ f3.close()
 Countries = list(Dictionary.keys())
 Countries.remove('World')
 
+cds = ColumnDataSource(twodaysDictionary)
+
 ##### ADD MULTICHOICE WIDGET HERE
 W = MultiChoice(value=["New Zealand", "Pakistan"], options=Countries,max_items = 5,search_option_limit = 20,
-                title = 'Choose up to 5 countries:')                      # not sure what value section does
-W.js_on_change("value", CustomJS(code="""
-    console.log('W: value=' + this.value, this.toString())"""))
+                title = 'Choose up to 5 countries:')  
+
+  ## JUST COPIED BELOW
+#callback = CustomJS(args=dict(source=cds), code="""
+#    const data = source.data;
+#    const f = cb_obj.value
+#    const x = data['x']
+#    const y = data['y']
+#    for (let i = 0; i < x.length; i++) {
+#        y[i] = Math.pow(x[i], f)
+#    }
+#    source.change.emit();
+#""")                  
+
+
+
+#CustomJS(code="""
+#    console.log('W: value=' + this.value, this.toString())""")
+
+## COPIED ABOVE
+
+#W.js_on_change("value", callback)
 
 ####################################
  
