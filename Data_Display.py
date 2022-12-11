@@ -164,5 +164,5 @@ I.vline_stack(['y1', 'y2'], x='x', source=source)
 W = figure(width=400, height=400, x_axis_label='Date')      # x_axis_type = datetime
 
 grid = gridplot([[P,I],[S,W]])
-#show(grid)
+show(grid)
 
