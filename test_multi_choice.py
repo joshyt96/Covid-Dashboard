@@ -118,11 +118,12 @@ I = figure(
     height=400, 
     x_axis_label='Date')      # x_axis_type = datetime
 
-I.vline_stack(['y1','y2','y3','y4','y5','y6','y7'], x='x', source=source)
+ys = ['y1','y2','y3','y4','y5','y6','y7']
+
+I.vline_stack(ys, x='x', source=source, legend_label = ys)
 I.legend.title='Markers'
 I.legend.location = "top_left"
 I.legend.click_policy="hide"
-#show(I)
 
 
 grid = gridplot([[S],[I]])

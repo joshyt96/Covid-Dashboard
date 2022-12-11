@@ -132,14 +132,6 @@ P.wedge(x=0, y=1, radius=0.4,
 P.axis.visible = False
 P.grid.grid_line_color = None
 
-
-# Interactive plot
-                                                # We need the plot to somehow incorporate the widget
-                                                # I was also thinking about making a dictionary for yesterday and yesterday2
-                                                # I already got the tables just didnt deal with json
-                                                # See scrape_data_experiments
-                                                # Add a legend
-
 source = ColumnDataSource(data=dict(
     #x=[str(twodays), str(yesterday), str(today)],          # I cent seem to get it to work with strings or datetime variables
     x =[0, 1, 2],
@@ -152,7 +144,6 @@ I.vline_stack(['y1', 'y2'], x='x', source=source)
 #show(I)
 
 W = figure(width=400, height=400, x_axis_label='Date')      # x_axis_type = datetime
-
 
 grid = gridplot([[P,I],[S,W]])
 show(grid)
