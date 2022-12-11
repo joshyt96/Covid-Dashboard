@@ -39,6 +39,7 @@ f3.close()
 
 Countries = list(Dictionary.keys())
 Countries.remove('World')
+print(Countries)
 
 tot_cases = []
 tot_deaths = []
@@ -92,10 +93,8 @@ colors = ['#FF0000','#008000']
 B.vbar_stack(Rates, x='Countries', width=0.9, color=colors, source=data,
              legend_label=Rates)
 
-
-
-
 country10 = Countries[0:10]
+print(country10)
 tot_cases = []
 tot_recov = []
 tot_death = []
@@ -106,7 +105,7 @@ for m in country10:
     tot_cases.append(int(Dictionary[m][0].replace(',','')))
     tot_recov.append(int(Dictionary[m][4].replace(',','').replace('N/A','0')))
     tot_death.append(int(Dictionary[m][2].replace(',','')))
-    active.append(int(Dictionary[m][6].replace(',','')))
+    active.append(int(Dictionary[m][6].replace(',','').replace('N/A','0')))
     
 datachoices = ['Total Cases', 'Recovered Cases','Active Cases','Total Deaths']
 
@@ -145,7 +144,6 @@ S.legend.orientation = "horizontal"
 S.legend.location = "top_right"
 S.legend.click_policy="hide"
 
-
 stat_names = [
     'Total Cases',
     #'Total Deaths',
@@ -172,7 +170,7 @@ INDIA = figure(
     height=400,
     width = 700,
     x_range = stat_names,
-    title="COVID Stats for USA",
+    title="COVID Stats for India",
     toolbar_location=None,
 )
 INDIA.vbar(
@@ -186,7 +184,7 @@ FRANCE = figure(
     height=400,
     width = 700,
     x_range = stat_names,
-    title="COVID Stats for USA",
+    title="COVID Stats for France",
     toolbar_location=None,
 )
 FRANCE.vbar(
@@ -200,7 +198,7 @@ GERMANY = figure(
     height=400,
     width = 700,
     x_range = stat_names,
-    title="COVID Stats for USA",
+    title="COVID Stats for Germany",
     toolbar_location=None,
 )
 GERMANY.vbar(
@@ -214,7 +212,7 @@ BRAZIL = figure(
     height=400,
     width = 700,
     x_range = stat_names,
-    title="COVID Stats for USA",
+    title="COVID Stats for Brazil",
     toolbar_location=None,
 )
 BRAZIL.vbar(
@@ -228,7 +226,7 @@ SKOREA = figure(
     height=400,
     width = 700,
     x_range = stat_names,
-    title="COVID Stats for USA",
+    title="COVID Stats for South Korea",
     toolbar_location=None,
 )
 SKOREA.vbar(
@@ -242,7 +240,7 @@ JAPAN = figure(
     height=400,
     width = 700,
     x_range = stat_names,
-    title="COVID Stats for USA",
+    title="COVID Stats for Japan",
     toolbar_location=None,
 )
 JAPAN.vbar(
@@ -256,7 +254,7 @@ ITALY = figure(
     height=400,
     width = 700,
     x_range = stat_names,
-    title="COVID Stats for USA",
+    title="COVID Stats for Italy",
     toolbar_location=None,
 )
 ITALY.vbar(
@@ -270,7 +268,7 @@ UK = figure(
     height=400,
     width = 700,
     x_range = stat_names,
-    title="COVID Stats for USA",
+    title="COVID Stats for UK",
     toolbar_location=None,
 )
 UK.vbar(
@@ -284,7 +282,7 @@ RUSSIA = figure(
     height=400,
     width = 700,
     x_range = stat_names,
-    title="COVID Stats for USA",
+    title="COVID Stats for Russia",
     toolbar_location=None,
 )
 RUSSIA.vbar(
@@ -294,8 +292,6 @@ RUSSIA.vbar(
     width=0.9)
 tab10 = TabPanel(child=RUSSIA, title="RUSSIA")
 tabPlots = Tabs(tabs=[tab1,tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10])
-
-
 
 
 
