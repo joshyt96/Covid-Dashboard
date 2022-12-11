@@ -299,6 +299,24 @@ tabPlots = Tabs(tabs=[tab1,tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10])
 
 
 
+
+# Time Plot
+Countries = list(Dictionary.keys())
+print(Countries)
+Countries.remove('World')
+
+country10 = Countries[0:10]
+tot_cases = []
+tot_recov = []
+tot_death = []
+active = []
+for m in country10:
+    if Dictionary[m][4] == '':
+        Dictionary[m][4] = '0'
+    tot_cases.append(int(Dictionary[m][0].replace(',','')))
+    tot_recov.append(int(Dictionary[m][4].replace(',','').replace('N/A','0')))
+    tot_death.append(int(Dictionary[m][2].replace(',','')))
+    active.append(int(Dictionary[m][6].replace(',','')))
 source = ColumnDataSource(data=dict(
     #x=[str(twodays), str(yesterday), str(today)],          # I cent seem to get it to work with strings or datetime variables
     x =[0, 1, 2],
