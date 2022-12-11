@@ -60,13 +60,13 @@ def scrape_country(country,url):
         length3 = len(mydata3)
         mydata3.loc[length3] = row3
     # Drop and clearing unnecessary rows
-    #mydata1.drop(mydata1.index[0:7], inplace=True)
+    mydata1.drop(mydata1.index[0:7], inplace=True)
     mydata1.drop(mydata1.index[222:229], inplace=True)
     mydata1.reset_index(inplace=True, drop=True)
-    #mydata2.drop(mydata2.index[0:7], inplace=True)
+    mydata2.drop(mydata2.index[0:7], inplace=True)
     mydata2.drop(mydata2.index[222:229], inplace=True)
     mydata2.reset_index(inplace=True, drop=True)
-    #mydata3.drop(mydata3.index[0:7], inplace=True)
+    mydata3.drop(mydata3.index[0:7], inplace=True)
     mydata3.drop(mydata3.index[222:229], inplace=True)
     mydata3.reset_index(inplace=True, drop=True)
     # Drop “#” column
