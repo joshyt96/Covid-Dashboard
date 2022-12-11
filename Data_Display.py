@@ -39,7 +39,6 @@ f3.close()
 
 Countries = list(Dictionary.keys())
 Countries.remove('World')
-print(Countries)
 
 tot_cases = []
 tot_deaths = []
@@ -93,8 +92,8 @@ colors = ['#FF0000','#008000']
 B.vbar_stack(Rates, x='Countries', width=0.9, color=colors, source=data,
              legend_label=Rates)
 
+
 country10 = Countries[0:10]
-print(country10)
 tot_cases = []
 tot_recov = []
 tot_death = []
@@ -296,33 +295,38 @@ tabPlots = Tabs(tabs=[tab1,tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10])
 
 
 # Time Plot
-Countries = list(Dictionary.keys())
-print(Countries)
-Countries.remove('World')
-
-country10 = Countries[0:10]
-tot_cases = []
-tot_recov = []
-tot_death = []
-active = []
+new_cases = []
+yesterday_new_cases = []
+twodays_new_cases = []
+i = 0
 for m in country10:
-    if Dictionary[m][4] == '':
-        Dictionary[m][4] = '0'
-    tot_cases.append(int(Dictionary[m][0].replace(',','')))
-    tot_recov.append(int(Dictionary[m][4].replace(',','').replace('N/A','0')))
-    tot_death.append(int(Dictionary[m][2].replace(',','')))
-    active.append(int(Dictionary[m][6].replace(',','')))
+    if Dictionary[m][1] == '':
+        Dictionary[m][1] = '0'
+    new_cases.append(int(Dictionary[m][1].replace(',','')))
+    print(m)
+    if yesterdayDictionary[m][1] == '':
+        yesterdayDictionary[m][1] = '0'
+    yesterday_new_cases.append(int(yesterdayDictionary[m][1].replace(',','')))
+    if twodaysDictionary[m][1] == '':
+        twodaysDictionary[m][1] = '0'
+    twodays_new_cases.append(int(twodaysDictionary[m][1].replace(',','')))
+    m = [new_cases[i],yesterday_new_cases[i],twodays_new_cases[i]]
+    i = i+1
+    print(m)
+print(USA)
 source = ColumnDataSource(data=dict(
-    #x=[str(twodays), str(yesterday), str(today)],          # I cent seem to get it to work with strings or datetime variables
+    #x=[str(twodays), str(yesterday), str(today)],     
     x =[0, 1, 2],
-    y1=[1, 2, 4],         # Data for New cases
-    y2=[1, 4, 2],         # Data for New deaths
+    y= [new_cases,yesterday_new_cases,twodays_new_cases]
+    
+    
 ))
-I = figure(width=400, height=400, x_axis_label='Date')      # x_axis_type = datetime
 
-I.vline_stack(['y1', 'y2'], x='x', source=source)
-#show(I)
+T = figure( x_axis_label='Date')      # x_axis_type = datetime
 
-grid = gridplot([[B],[S,I],[tabPlots]])
-show(grid)
+T.vline_stack(['y'], x='x', source=source)
+show(T)
+
+#grid = gridplot([[B],[S],[tabPlots],[T]])
+#show(grid)
 
