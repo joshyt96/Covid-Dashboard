@@ -38,7 +38,8 @@ twodaysDictionary = json.load(f3)
 f3.close()    
 
 Countries = list(Dictionary.keys())
-Countries = Countries[8:-1]
+Countries.remove('World')
+print(Countries)
 
 tot_cases = []
 tot_deaths = []
@@ -104,7 +105,7 @@ for m in country10:
     tot_cases.append(int(Dictionary[m][0].replace(',','')))
     tot_recov.append(int(Dictionary[m][4].replace(',','').replace('N/A','0')))
     tot_death.append(int(Dictionary[m][2].replace(',','')))
-    active.append(int(Dictionary[m][6].replace(',','')))
+    active.append(int(Dictionary[m][6].replace(',','').replace('N/A','0')))
     
 datachoices = ['Total Cases', 'Recovered Cases','Active Cases','Total Deaths']
 
@@ -142,7 +143,6 @@ S.xgrid.grid_line_color = None
 S.legend.orientation = "horizontal"
 S.legend.location = "top_right"
 S.legend.click_policy="hide"
-
 
 stat_names = [
     'Total Cases',
@@ -292,30 +292,6 @@ RUSSIA.vbar(
     width=0.9)
 tab10 = TabPanel(child=RUSSIA, title="RUSSIA")
 tabPlots = Tabs(tabs=[tab1,tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10])
-
-# Time Plot
-
-tot_cases = []
-tot_recov = []
-tot_death = []
-active = []
-for m in country10:
-    if Dictionary[m][4] == '':
-        Dictionary[m][4] = '0'
-    tot_cases.append(int(Dictionary[m][0].replace(',','')))
-    tot_recov.append(int(Dictionary[m][4].replace(',','').replace('N/A','0')))
-    tot_death.append(int(Dictionary[m][2].replace(',','')))
-    active.append(int(Dictionary[m][6].replace(',','')))
-source = ColumnDataSource(data=dict(
-    #x=[str(twodays), str(yesterday), str(today)],          # I cent seem to get it to work with strings or datetime variables
-    x =[0, 1, 2],
-    y1=[1, 2, 4],         # Data for New cases
-    y2=[1, 4, 2],         # Data for New deaths
-))
-I = figure(width=400, height=400, x_axis_label='Date')      # x_axis_type = datetime
-
-I.vline_stack(['y1', 'y2'], x='x', source=source)
-#show(I)
 
 grid = gridplot([[B],[S],[tabPlots]])
 show(grid)
