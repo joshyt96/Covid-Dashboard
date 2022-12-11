@@ -299,7 +299,6 @@ tabPlots = Tabs(tabs=[tab1,tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10])
 
 
 
-
 # Time Plot
 Countries = list(Dictionary.keys())
 print(Countries)
@@ -328,6 +327,6 @@ I = figure(width=400, height=400, x_axis_label='Date')      # x_axis_type = date
 I.vline_stack(['y1', 'y2'], x='x', source=source)
 #show(I)
 
-grid = gridplot([[B],[S],[tabPlots]])
+grid = gridplot([[B],[S,I],[tabPlots]])
 show(grid)
 
