@@ -119,8 +119,6 @@ USA = figure(
     x_range = stat_names,
     title="COVID Stats for USA",
     toolbar_location=None,
-    tools="hover",
-    tooltips="$top @stat_names: @$top"
 )
 USA.vbar(
     stat_names,
@@ -135,8 +133,6 @@ INDIA = figure(
     x_range = stat_names,
     title="COVID Stats for USA",
     toolbar_location=None,
-    tools="hover",
-    tooltips="$name @Countries: @$name"
 )
 INDIA.vbar(
     stat_names,
@@ -151,8 +147,6 @@ FRANCE = figure(
     x_range = stat_names,
     title="COVID Stats for USA",
     toolbar_location=None,
-    tools="hover",
-    tooltips="$name @Countries: @$name"
 )
 FRANCE.vbar(
     stat_names,
@@ -167,8 +161,6 @@ GERMANY = figure(
     x_range = stat_names,
     title="COVID Stats for USA",
     toolbar_location=None,
-    tools="hover",
-    tooltips="$name @Countries: @$name"
 )
 GERMANY.vbar(
     stat_names,
@@ -183,8 +175,6 @@ BRAZIL = figure(
     x_range = stat_names,
     title="COVID Stats for USA",
     toolbar_location=None,
-    tools="hover",
-    tooltips="$name @Countries: @$name"
 )
 BRAZIL.vbar(
     stat_names,
@@ -199,8 +189,6 @@ SKOREA = figure(
     x_range = stat_names,
     title="COVID Stats for USA",
     toolbar_location=None,
-    tools="hover",
-    tooltips="$name @Countries: @$name"
 )
 SKOREA.vbar(
     stat_names,
@@ -215,8 +203,6 @@ JAPAN = figure(
     x_range = stat_names,
     title="COVID Stats for USA",
     toolbar_location=None,
-    tools="hover",
-    tooltips="$name @Countries: @$name"
 )
 JAPAN.vbar(
     stat_names,
@@ -231,8 +217,6 @@ ITALY = figure(
     x_range = stat_names,
     title="COVID Stats for USA",
     toolbar_location=None,
-    tools="hover",
-    tooltips="$name @Countries: @$name"
 )
 ITALY.vbar(
     stat_names,
@@ -247,8 +231,6 @@ UK = figure(
     x_range = stat_names,
     title="COVID Stats for USA",
     toolbar_location=None,
-    tools="hover",
-    tooltips="$name @Countries: @$name"
 )
 UK.vbar(
     stat_names,
@@ -263,8 +245,6 @@ RUSSIA = figure(
     x_range = stat_names,
     title="COVID Stats for USA",
     toolbar_location=None,
-    tools="hover",
-    tooltips="$name @Countries: @$name"
 )
 RUSSIA.vbar(
     stat_names,
