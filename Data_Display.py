@@ -15,6 +15,8 @@ from bokeh.transform import cumsum
 from bokeh.plotting import figure, show
 from bokeh.io import show
 
+
+
 # Scrape the Data
 Country = 'New Zealand'
 Website = 'https://www.worldometers.info/coronavirus/#countries'
