@@ -17,6 +17,8 @@ from bokeh.io import show
 from bokeh.palettes import Spectral4
 from bokeh.plotting import figure, show
 from bokeh.models import LassoSelectTool, Plot, WheelZoomTool
+from bokeh.models import TabPanel, Tabs
+from bokeh.plotting import figure, show
 
 
 # Scrape the Data
@@ -47,7 +49,10 @@ Countries.remove('World')
 cds = ColumnDataSource(twodaysDictionary)
 
 tot_cases = []
+tot_deaths = []
 tot_recov = []
+act_case = []
+test_1M_pop = []
 new_cases = []
 new_deaths = []
 yesterday_cases = []
@@ -59,30 +64,26 @@ for m in Countries:
         Dictionary[m][4] = '0'
     if Dictionary[m][3] == '':
         Dictionary[m][3] = '0'
-    if Dictionary[m][1] == '':
-        Dictionary[m][1] = '0'
-    if yesterdayDictionary[m][3] == '':
-        Dictionary[m][3] = '0'
-    if yesterdayDictionary[m][1] == '':
-        Dictionary[m][1] = '0'
-    if twodaysDictionary[m][3] == '':
-        Dictionary[m][3] = '0'
-    if twodaysDictionary[m][1] == '':
-        Dictionary[m][1] = '0'
+    if Dictionary[m][2] == '':
+        Dictionary[m][2] = '0'
+    if Dictionary[m][0] == '':
+        Dictionary[m][0] = '0'
+    if Dictionary[m][6] == '':
+        Dictionary[m][6] = '0'
+    if Dictionary[m][11] == '':
+        Dictionary[m][11] = '0'
     tot_cases.append(int(Dictionary[m][0].replace(',','')))
+    #tot_deaths.append(int(Dictionary[m][2].replace(',','').replace('N/A','0')))
     tot_recov.append(int(Dictionary[m][4].replace(',','').replace('N/A','0')))
-    new_cases.append(int(Dictionary[m][1].replace(',','').replace('N/A','0')))
-    new_deaths.append(int(Dictionary[m][3].replace(',','')))
-    yesterday_cases.append(int(Dictionary[m][1].replace(',','').replace('N/A','0')))
-    yesterday_deaths.append(int(Dictionary[m][3].replace(',','')))
-    twodays_cases.append(int(Dictionary[m][1].replace(',','').replace('N/A','0')))
-    twodays_deaths.append(int(Dictionary[m][3].replace(',','')))
+    act_case.append(int(Dictionary[m][6].replace(',','').replace('N/A','0')))
+    test_1M_pop.append(int(Dictionary[m][11].replace(',','').replace('N/A','0')))
 
 Rates = ["Total Cases", "Recovered Cases"]
                                                     # data with country title, the death cases and the recovered cases
 data = {'Countries' : Countries,
         'Total Cases'  : tot_cases,
-        'Recovered Cases' : tot_recov}
+        'Recovered Cases' : tot_recov
+        }
 S = figure(
     x_range=Countries, 
     height=250,
@@ -102,30 +103,176 @@ S.vbar_stack(Rates, x='Countries', width=0.9, color=colors, source=data,
 source = ColumnDataSource(data=dict(
     #x=[str(twodays), str(yesterday), str(today)],          # I cent seem to get it to work with strings or datetime variables
     x =[1,2,3],
-    y1=[twodays_deaths[0],yesterday_deaths[0],new_deaths[0]],
-    y2=[twodays_deaths[1],yesterday_deaths[1],new_deaths[1]],
-    y3=[twodays_deaths[2],yesterday_deaths[2],new_deaths[2]],
-    y4=[twodays_deaths[3],yesterday_deaths[3],new_deaths[3]],
-    y5=[twodays_deaths[4],yesterday_deaths[4],new_deaths[4]],
-    y6=[twodays_deaths[5],yesterday_deaths[5],new_deaths[5]],
-    y7=[twodays_deaths[6],yesterday_deaths[6],new_deaths[6]],
-    y8=[twodays_deaths[7],yesterday_deaths[7],new_deaths[7]],
-    y9=[twodays_deaths[8],yesterday_deaths[8],new_deaths[8]],
-    y10=[twodays_deaths[9],yesterday_deaths[9],new_deaths[9]],# Data for New deaths
+    y1 = [1,2,3]
 ))
-I = figure(
-    width=400,
-    height=400, 
-    x_axis_label='Date')      # x_axis_type = datetime
+stat_names = [
+    'Total Cases',
+    #'Total Deaths',
+    'Total Recovered',
+    'Active Cases',
+    'Test/ 1M Pop'
+    ]
 
-ys = ['y1','y2','y3','y4','y5','y6','y7']
+USA = figure(
+    height=400,
+    width = 700,
+    x_range = stat_names,
+    title="COVID Stats for USA",
+    toolbar_location=None,
+    tools="hover",
+    tooltips="$top @stat_names: @$top"
+)
+USA.vbar(
+    stat_names,
+    top=[tot_cases[0],tot_recov[0],act_case[0],test_1M_pop[0]],
+    bottom=0,
+    width=0.9)
+tab1 = TabPanel(child=USA, title="USA")
 
-I.vline_stack(ys, x='x', source=source, legend_label = ys)
-I.legend.title='Markers'
-I.legend.location = "top_left"
-I.legend.click_policy="hide"
+INDIA = figure(
+    height=400,
+    width = 700,
+    x_range = stat_names,
+    title="COVID Stats for USA",
+    toolbar_location=None,
+    tools="hover",
+    tooltips="$name @Countries: @$name"
+)
+INDIA.vbar(
+    stat_names,
+    top=[tot_cases[1],tot_recov[1],act_case[1],test_1M_pop[1]],
+    bottom=0,
+    width=0.9)
+tab2 = TabPanel(child=INDIA, title="INDIA")
 
+FRANCE = figure(
+    height=400,
+    width = 700,
+    x_range = stat_names,
+    title="COVID Stats for USA",
+    toolbar_location=None,
+    tools="hover",
+    tooltips="$name @Countries: @$name"
+)
+FRANCE.vbar(
+    stat_names,
+    top=[tot_cases[2],tot_recov[2],act_case[2],test_1M_pop[2]],
+    bottom=0,
+    width=0.9)
+tab3 = TabPanel(child=FRANCE, title="FRANCE")
 
-grid = gridplot([[S],[I]])
+GERMANY = figure(
+    height=400,
+    width = 700,
+    x_range = stat_names,
+    title="COVID Stats for USA",
+    toolbar_location=None,
+    tools="hover",
+    tooltips="$name @Countries: @$name"
+)
+GERMANY.vbar(
+    stat_names,
+    top=[tot_cases[3],tot_recov[3],act_case[3],test_1M_pop[3]],
+    bottom=0,
+    width=0.9)
+tab4 = TabPanel(child=GERMANY, title="GERMANY")
+
+BRAZIL = figure(
+    height=400,
+    width = 700,
+    x_range = stat_names,
+    title="COVID Stats for USA",
+    toolbar_location=None,
+    tools="hover",
+    tooltips="$name @Countries: @$name"
+)
+BRAZIL.vbar(
+    stat_names,
+    top=[tot_cases[4],tot_recov[4],act_case[4],test_1M_pop[4]],
+    bottom=0,
+    width=0.9)
+tab5 = TabPanel(child=BRAZIL, title="BRAZIL")
+
+SKOREA = figure(
+    height=400,
+    width = 700,
+    x_range = stat_names,
+    title="COVID Stats for USA",
+    toolbar_location=None,
+    tools="hover",
+    tooltips="$name @Countries: @$name"
+)
+SKOREA.vbar(
+    stat_names,
+    top=[tot_cases[5],tot_recov[5],act_case[5],test_1M_pop[5]],
+    bottom=0,
+    width=0.9)
+tab6 = TabPanel(child=SKOREA, title="S. KOREA")
+
+JAPAN = figure(
+    height=400,
+    width = 700,
+    x_range = stat_names,
+    title="COVID Stats for USA",
+    toolbar_location=None,
+    tools="hover",
+    tooltips="$name @Countries: @$name"
+)
+JAPAN.vbar(
+    stat_names,
+    top=[tot_cases[6],tot_recov[6],act_case[6],test_1M_pop[6]],
+    bottom=0,
+    width=0.9)
+tab7 = TabPanel(child=JAPAN, title="JAPAN")
+
+ITALY = figure(
+    height=400,
+    width = 700,
+    x_range = stat_names,
+    title="COVID Stats for USA",
+    toolbar_location=None,
+    tools="hover",
+    tooltips="$name @Countries: @$name"
+)
+ITALY.vbar(
+    stat_names,
+    top=[tot_cases[7],tot_recov[7],act_case[7],test_1M_pop[7]],
+    bottom=0,
+    width=0.9)
+tab8 = TabPanel(child=ITALY, title="ITALY")
+
+UK = figure(
+    height=400,
+    width = 700,
+    x_range = stat_names,
+    title="COVID Stats for USA",
+    toolbar_location=None,
+    tools="hover",
+    tooltips="$name @Countries: @$name"
+)
+UK.vbar(
+    stat_names,
+    top=[tot_cases[8],tot_recov[8],act_case[8],test_1M_pop[8]],
+    bottom=0,
+    width=0.9)
+tab9 = TabPanel(child=UK, title="UK")
+
+RUSSIA = figure(
+    height=400,
+    width = 700,
+    x_range = stat_names,
+    title="COVID Stats for USA",
+    toolbar_location=None,
+    tools="hover",
+    tooltips="$name @Countries: @$name"
+)
+RUSSIA.vbar(
+    stat_names,
+    top=[tot_cases[9],tot_recov[9],act_case[9],test_1M_pop[9]],
+    bottom=0,
+    width=0.9)
+tab10 = TabPanel(child=RUSSIA, title="RUSSIA")
+tabPlots = Tabs(tabs=[tab1,tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10])
+grid = gridplot([[S],[tabPlots]])
 show(grid)
 
