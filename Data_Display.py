@@ -7,11 +7,11 @@ from datetime import date
 import pandas as pd
 import numpy as np
 from bokeh.layouts import column, row, gridplot
-from bokeh.models import (ColumnDataSource, DataTable, HoverTool, IntEditor,
+from bokeh.models import (ColumnDataSource, FactorRange, DataTable, HoverTool, IntEditor,
                           NumberEditor, NumberFormatter, SelectEditor,
                           StringEditor, StringFormatter, TableColumn, CustomJS, MultiChoice)
 from bokeh.palettes import HighContrast3, Category20c
-from bokeh.transform import cumsum
+from bokeh.transform import cumsum, dodge 
 from bokeh.plotting import figure, show
 from bokeh.io import show
 
@@ -37,66 +37,71 @@ f3 = open(f'{twodays}-table.json')
 twodaysDictionary = json.load(f3)
 f3.close()    
 
-# Plot the Static Plot
-#Countries = ['Apples', 'Pears', 'Nectarines', 'Plums', 'Grapes', 'Strawberries']
 
-#f = open('2022-12-08-table.json')
-#todayCountryData = json.load(f)
-#Make a list of all the country names
 Countries = list(Dictionary.keys())
 Countries.remove('World')
 
-cds = ColumnDataSource(twodaysDictionary)
-
-##### ADD MULTICHOICE WIDGET HERE
-W = MultiChoice(value=["New Zealand", "Pakistan"], options=Countries,max_items = 5,search_option_limit = 20,
-                title = 'Choose up to 5 countries:')  
-
-  ## JUST COPIED BELOW
-#callback = CustomJS(args=dict(source=cds), code="""
-#    const data = source.data;
-#    const f = cb_obj.value
-#    const x = data['x']
-#    const y = data['y']
-#    for (let i = 0; i < x.length; i++) {
-#        y[i] = Math.pow(x[i], f)
-#    }
-#    source.change.emit();
-#""")                  
-
-
-
-#CustomJS(code="""
-#    console.log('W: value=' + this.value, this.toString())""")
-
-## COPIED ABOVE
-
-#W.js_on_change("value", callback)
-
-####################################
- 
+country10 = Countries[0:10]
 tot_cases = []
 tot_recov = []
-for m in Countries:
+tot_death = []
+active = []
+for m in country10:
     if Dictionary[m][4] == '':
         Dictionary[m][4] = '0'
     tot_cases.append(int(Dictionary[m][0].replace(',','')))
     tot_recov.append(int(Dictionary[m][4].replace(',','').replace('N/A','0')))
+    tot_death.append(int(Dictionary[m][2].replace(',','')))
+    active.append(int(Dictionary[m][6].replace(',','')))
+    
+datachoices = ['Total Cases', 'Recovered Cases','Active Cases','Total Deaths']
 
-Rates = ["Total Cases", "Recovered Cases"]
+data = {'Country' : country10,
+         'TotalCases' : tot_cases,
+         'RecoveredCases' : tot_recov,
+         'ActiveCases' : active,
+         'TotalDeaths' : tot_death}
+source = ColumnDataSource(data=data)
+
+TOOLTIPS = [("Country","@Country"), 
+            ("Total Cases","@TotalCases"),
+            ("Recovered Cases","@RecoveredCases"),
+            ("Active Cases","@ActiveCases"),
+            ("Total Deaths","@TotalDeaths")]
+
+S = figure(x_range=country10, 
+           title="Top 10 Countries: click on legend entries to hide the corresponding data",
+           height=350, toolbar_location=None, tools="hover", tooltips = TOOLTIPS)
+
+S.vbar(x=dodge('Country', -0.3, range=S.x_range), top='TotalCases', source=source,
+       width=0.15, color="#c9d9d3", legend_label="Total Cases")
+
+S.vbar(x=dodge('Country',  -0.1,  range=S.x_range), top='RecoveredCases', source=source,
+       width=0.15, color="#718dbf", legend_label="Recovered Cases")
+
+S.vbar(x=dodge('Country',  0.1,  range=S.x_range), top='ActiveCases', source=source,
+       width=0.15, color="#1252B3", legend_label="Active Cases")
+
+S.vbar(x=dodge('Country', 0.3, range=S.x_range), top='TotalDeaths', source=source,
+       width=0.15, color="#e84d60", legend_label="Total Deaths")
+
+S.x_range.range_padding = 0.05
+S.xgrid.grid_line_color = None
+S.legend.orientation = "horizontal"
+S.legend.location = "top_right"
+S.legend.click_policy="hide"
+
+#Rates = ["Total Cases", "Recovered Cases"]
                                                     # data with country title, the death cases and the recovered cases
-data = {'Countries' : Countries,
-        'Total Cases'  : tot_cases,
-        'Recovered Cases' : tot_recov}
-S = figure(x_range=Countries, height=250, title="Case Results by Country",
-           toolbar_location=None, tools="hover", tooltips="$name @Countries: @$name")
-S.xaxis.major_label_orientation = np.pi/4
-colors = ['#FF0000','#008000']
-S.vbar_stack(Rates, x='Countries', width=0.9, color=colors, source=data,
-             legend_label=Rates)
-#S.x_range.range_padding = 0.1
-#S.legend.location = "top_left"
-#S.legend.orientation = "horizontal"
+#data = {'Countries' : Countries,
+#        'Total Cases'  : tot_cases,
+#        'Recovered Cases' : tot_recov}
+#S = figure(x_range=Countries, height=250, width=1000, title="Case Results by Country",
+#           toolbar_location=None, tools="hover", tooltips="$name @Countries: @$name")
+#S.xaxis.major_label_orientation = np.pi/4
+#colors = ['#FF0000','#008000']
+#S.vbar_stack(Rates, x='Countries', width=0.9, color=colors, source=data,
+#             legend_label=Rates)
 
 # Pie graph
                                                     #  x = Dictionary with just country and the percent of the cases
@@ -143,6 +148,8 @@ I = figure(width=400, height=400, x_axis_label='Date')      # x_axis_type = date
 
 I.vline_stack(['y1', 'y2'], x='x', source=source)
 #show(I)
+
+W = figure(width=400, height=400, x_axis_label='Date')      # x_axis_type = datetime
 
 
 grid = gridplot([[P,I],[S,W]])
