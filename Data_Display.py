@@ -45,7 +45,6 @@ tot_deaths = []
 tot_recov = []
 act_case = []
 test_1M_pop = []
-new_cases = []
 new_deaths = []
 yesterday_cases = []
 yesterday_deaths = []
@@ -299,34 +298,45 @@ new_cases = []
 yesterday_new_cases = []
 twodays_new_cases = []
 i = 0
+
 for m in country10:
     if Dictionary[m][1] == '':
         Dictionary[m][1] = '0'
     new_cases.append(int(Dictionary[m][1].replace(',','')))
-    print(m)
     if yesterdayDictionary[m][1] == '':
         yesterdayDictionary[m][1] = '0'
     yesterday_new_cases.append(int(yesterdayDictionary[m][1].replace(',','')))
     if twodaysDictionary[m][1] == '':
         twodaysDictionary[m][1] = '0'
     twodays_new_cases.append(int(twodaysDictionary[m][1].replace(',','')))
-    m = [new_cases[i],yesterday_new_cases[i],twodays_new_cases[i]]
-    i = i+1
     print(m)
-print(USA)
+    
+label=[str(twodays), str(yesterday), str(today)]
 source = ColumnDataSource(data=dict(
-    #x=[str(twodays), str(yesterday), str(today)],     
-    x =[0, 1, 2],
-    y= [new_cases,yesterday_new_cases,twodays_new_cases]
-    
-    
-))
+    x =[.5, 1.5, 2.5],
+    India =[new_cases[1],yesterday_new_cases[1],twodays_new_cases[1]],
+    France =[new_cases[2],yesterday_new_cases[2],twodays_new_cases[2]],
+    Germany =[new_cases[3],yesterday_new_cases[3],twodays_new_cases[3]],
+    Brazil =[new_cases[4],yesterday_new_cases[4],twodays_new_cases[4]],
+    S_Korea =[new_cases[5],yesterday_new_cases[5],twodays_new_cases[5]],
+    Japan =[new_cases[6],yesterday_new_cases[6],twodays_new_cases[6]],
+    Italy =[new_cases[7],yesterday_new_cases[7],twodays_new_cases[7]],
+    UK =[new_cases[8],yesterday_new_cases[8],twodays_new_cases[8]],
+    Russia =[new_cases[9],yesterday_new_cases[9],twodays_new_cases[9]],
+    USA =[new_cases[0],yesterday_new_cases[0],twodays_new_cases[0]]))
+print(country10)
+T = figure(x_range=label, x_axis_label='Date',
+    title="New Cases Results by Country",
+    toolbar_location=None,
+    tools="hover",
+    tooltips="$name @Countries: @$name")  
 
-T = figure( x_axis_label='Date')      # x_axis_type = datetime
+T.vline_stack(['USA','India','France','Germany','Brazil','S_Korea','Japan','Italy','UK','Russia'], x='x', 
+    legend_label=country10,
+    source=source)
+#T.legend.orientation = "horizontal"
+#T.legend.location = "top_right"
 
-T.vline_stack(['y'], x='x', source=source)
-show(T)
-
-#grid = gridplot([[B],[S],[tabPlots],[T]])
-#show(grid)
+grid = gridplot([[B],[S],[tabPlots],[T]])
+show(grid)
 
