@@ -5,7 +5,7 @@ import datetime
 from datetime import date
 import numpy as np
 from bokeh.layouts import gridplot
-from bokeh.models import (ColumnDataSource, TabPanel, Tabs)
+from bokeh.models import (ColumnDataSource, TabPanel, Tabs, Legend)
 from bokeh.palettes import HighContrast3, Category20c
 from bokeh.transform import dodge 
 from bokeh.plotting import figure, show
@@ -304,11 +304,16 @@ tabPlots = Tabs(tabs=[tab1,tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10])
 
 
 
+
+
+
 # Time Plot
 new_cases = []
 yesterday_new_cases = []
 twodays_new_cases = []
 i = 0
+
+country10 = Countries[0:10]
 
 for m in country10:
     if Dictionary[m][1] == '':
@@ -320,35 +325,75 @@ for m in country10:
     if twodaysDictionary[m][1] == '':
         twodaysDictionary[m][1] = '0'
     twodays_new_cases.append(int(twodaysDictionary[m][1].replace(',','')))
-    print(m)
     
-label=[str(twodays), str(yesterday), str(today)]
-source = ColumnDataSource(data=dict(
-    x =[.5, 1.5, 2.5],
-    India =[new_cases[1],yesterday_new_cases[1],twodays_new_cases[1]],
-    France =[new_cases[2],yesterday_new_cases[2],twodays_new_cases[2]],
-    Germany =[new_cases[3],yesterday_new_cases[3],twodays_new_cases[3]],
-    Brazil =[new_cases[4],yesterday_new_cases[4],twodays_new_cases[4]],
-    S_Korea =[new_cases[5],yesterday_new_cases[5],twodays_new_cases[5]],
-    Japan =[new_cases[6],yesterday_new_cases[6],twodays_new_cases[6]],
-    Italy =[new_cases[7],yesterday_new_cases[7],twodays_new_cases[7]],
-    UK =[new_cases[8],yesterday_new_cases[8],twodays_new_cases[8]],
-    Russia =[new_cases[9],yesterday_new_cases[9],twodays_new_cases[9]],
-    USA =[new_cases[0],yesterday_new_cases[0],twodays_new_cases[0]]))
-print(country10)
+nc = new_cases
+ync = yesterday_new_cases
+tdnc = twodays_new_cases
 
-#TColors = ['#5FB3F9','#7ED085','#FEFF00','#FF8D00','#EA5000','#F87E7D','#991310','#000000','#974C00','#9210AD']
+label=[str(twodays), str(yesterday), str(today)]
+
 T = figure(x_range=label, x_axis_label='Date',
     title="New Cases Results by Country",
     toolbar_location=None,
     tools="hover",
-    tooltips="$name @Countries: @$name")  
+    tooltips="$name: @$name")  
 
-T.vline_stack(['USA','India','France','Germany','Brazil','S_Korea','Japan','Italy','UK','Russia'], x='x', 
-    legend_label=country10,
-    source=source)
-#T.legend.orientation = "horizontal"
-#T.legend.location = "top_right"
+USA = T.line(x=[.5, 1.5, 2.5],
+                  y=[tdnc[0],ync[0],nc[0]],
+                  line_width=4, color="pink")
+India = T.line(x=[.5, 1.5, 2.5],
+                  y=[tdnc[1],ync[1],nc[1]],
+                  line_width=4, color="blue")
+
+France = T.line(x=[.5, 1.5, 2.5],
+                  y=[tdnc[2],ync[2],nc[2]],
+                  line_width=4, color="yellow")
+
+Germany = T.line(x=[.5, 1.5, 2.5],
+                  y=[tdnc[3],ync[3],nc[3]],
+                  line_width=4, color="red")
+
+Brazil = T.line(x=[.5, 1.5, 2.5],
+                  y=[tdnc[4],ync[4],nc[4]],
+                  line_width=4, color="black")
+
+S_Korea = T.line(x=[.5, 1.5, 2.5],
+                  y=[tdnc[5],ync[5],nc[5]],
+                  line_width=4, color="orange")
+
+Japan = T.line(x=[.5, 1.5, 2.5],
+                  y=[tdnc[6],ync[6],nc[6]],
+                  line_width=4, color="green")
+
+Italy = T.line(x=[.5, 1.5, 2.5],
+                  y=[tdnc[7],ync[7],nc[7]],
+                  line_width=4, color="purple")
+
+UK = T.line(x=[.5, 1.5, 2.5],
+                  y=[tdnc[8],ync[8],nc[8]],
+                  line_width=4, color="brown") 
+
+Russia = T.line(x=[.5, 1.5, 2.5],
+                  y=[tdnc[9],ync[9],nc[9]],
+                  line_width=4, color="cyan") 
+
+legend1 = Legend(items=[("USA", [USA]),
+                        ("India", [India]),
+                        ("France", [France]),
+                        ("Germany", [Germany]),
+                        ("Brazil", [Brazil])],
+                 location=(7, 2), orientation="horizontal")
+
+legend2 = Legend(items=[("S. Korea", [S_Korea]),
+                        ("Japan", [Japan]),
+                        ("Italy", [Italy]),
+                        ("UK", [UK]),
+                        ("Russia", [Russia]),
+                        ],
+                 location=(7, 2), orientation="horizontal")
+
+T.add_layout(legend1, 'above')
+T.add_layout(legend2, 'above')
 
 grid = gridplot([[B],[S],[tabPlots],[T]])
 show(grid)
