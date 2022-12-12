@@ -22,7 +22,19 @@ This function also saves a .json that includes all the Country COVID data retrei
 ## Part Two
 ### World Bar Plot
 The first plot shown on the page is a "Big Picture" view of COVID statistics from around the world. For every country included on the source URL's site, there is the total cases and the total recovered cases. At first glance, it is a lot to see so we added a scroll wheel zoom and pan tool that is usable on this plot. To use it, simply click the "Pan (x-axis)" and "Wheel Scroll (x-axis)" button at the top right of the plot.
+
+![World Bar Plot](worldPlot.png)
+
 ### Top Ten Bar Plot
-The plot below the first features a collection of the top ten countries and a review of some key stats. The plot below it shows the same information, but you can isolate the stats by country by simply cycling through the tabs.
+The first top ten plot shows a summary of the stats associated with the top ten countries in the world. It is desgined to allow the user to compare stats in a 'big picture' view. 
+
+![Top Ten Bar Plot](topTenSummary.png)
+
+Like the previous plot, this plot shows more detailed stats for the top ten countries in the world. This view is tabulated and the user can cycle through countries by clicking their associated tab above it.
+
+![Top Ten Tabs](topTenTabs.png)
+
 ### Top Ten Historical Plot
 Finally, the last plot shows the past two days of COVID data for the same ten countries.
+
+![Top Ten Historical Plot](histLinePlot.png)
