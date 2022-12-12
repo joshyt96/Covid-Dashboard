@@ -302,11 +302,6 @@ RUSSIA.vbar(
 tab10 = TabPanel(child=RUSSIA, title="RUSSIA")
 tabPlots = Tabs(tabs=[tab1,tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10])
 
-
-
-
-
-
 # Time Plot
 new_cases = []
 yesterday_new_cases = []
@@ -394,6 +389,13 @@ legend2 = Legend(items=[("S. Korea", [S_Korea]),
 
 T.add_layout(legend1, 'above')
 T.add_layout(legend2, 'above')
+
+#T.vline_stack(['USA','India','France','Germany','Brazil','S_Korea','Japan','Italy','UK','Russia'], x='x', 
+#    legend_label=country10,
+    #line_color=TColors,
+#    source=source)
+#T.legend.orientation = "horizontal"
+#T.legend.location = "top_right"
 
 grid = gridplot([[B],[S],[tabPlots],[T]])
 show(grid)
