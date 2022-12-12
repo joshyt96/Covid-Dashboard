@@ -8,10 +8,11 @@ This program scrapes data from https://www.worldometers.info/coronavirus/ and di
 ## Part One
 For this part of the assignment, we were ask to commit code that successfully scrapes COVID death data from the web. We have also made a function, scrape_country, that asks accepts a URL and country name which outputs a list with death data for the chosen country. Example of how to use the function:
 
-First parameter is the URL. Note, this function only works with 'https://www.worldometers.info/coronavirus/#countries', any other URL will not work.
-Second parameter is the name of the country. Note, the name you input needs to follow the same spelling that is included on the previously mentioned website. An example of this is South Korea. The table on the website lists South Korea as 'S. Korea', using anything else will not return anything from the function.
+First parameter is the name of the country. Note, the name you input needs to follow the same spelling that is included on the previously mentioned website. An example of this is South Korea. The table on the website lists South Korea as 'S. Korea', using anything else will not return anything from the function.
 
-scrape_country('https://www.worldometers.info/coronavirus/#countries', 'USA')
+Second parameter is the URL. Note, this function only works with 'https://www.worldometers.info/coronavirus/#countries', any other URL will not work.
+
+scrape_country('USA','https://www.worldometers.info/coronavirus/#countries')
 
 The output of this function is a list of floats that follow this form:
 
@@ -30,7 +31,7 @@ The first top ten plot shows a summary of the stats associated with the top ten 
 
 ![Top Ten Bar Plot](topTenSummary.png)
 
-Like the previous plot, this plot shows more detailed stats for the top ten countries in the world. This view is tabulated and the user can cycle through countries by clicking their associated tab above it.
+Like the previous plot, this plot shows more detailed stats for the top ten countries in the world with the most total COVID cases. This view is tabulated and the user can cycle through countries by clicking their associated tab above it.
 
 ![Top Ten Tabs](topTenTabs.png)
 
