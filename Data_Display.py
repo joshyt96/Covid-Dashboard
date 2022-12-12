@@ -1,17 +1,13 @@
-import ScrapeWebsite
 from ScrapeWebsite import scrape_country
 import json
 from math import pi
 import datetime
 from datetime import date
-import pandas as pd
 import numpy as np
-from bokeh.layouts import column, row, gridplot
-from bokeh.models import (ColumnDataSource, TabPanel, Tabs, FactorRange, DataTable, HoverTool, IntEditor,
-                          NumberEditor, NumberFormatter, SelectEditor,
-                          StringEditor, StringFormatter, TableColumn, CustomJS, MultiChoice)
+from bokeh.layouts import gridplot
+from bokeh.models import (ColumnDataSource, TabPanel, Tabs)
 from bokeh.palettes import HighContrast3, Category20c
-from bokeh.transform import cumsum, dodge 
+from bokeh.transform import dodge 
 from bokeh.plotting import figure, show
 from bokeh.io import show
 
@@ -74,11 +70,15 @@ for m in Countries:
 Rates = ["Total Cases", "Recovered Cases"]
                                                     # data with country title, the death cases and the recovered cases
 data = {'Countries' : Countries,
-        'Total Cases'  : tot_cases,
-        'Recovered Cases' : tot_recov
+        'TotalCases'  : tot_cases,
+        'RecoveredCases' : tot_recov
         }
 
 # Code that makes the bar graph displaying a small amount of data for the entire world
+TOOLTIPS = [("Country","@Countries"), 
+            ("Total Cases","@TotalCases"),
+            ("Recovered Cases","@RecoveredCases")]
+
 B = figure(
     x_range=Countries, 
     height=250,
@@ -86,16 +86,21 @@ B = figure(
     title="Case Results by Country",
     toolbar_location=None,
     tools="hover",
-    tooltips="$name @Countries: @$name")
-B.add_tools('xwheel_zoom')
-B.add_tools('xpan')
+    tooltips = TOOLTIPS)
 
 B.xaxis.major_label_orientation = np.pi/4
 colors = ['#FF0000','#008000']
-B.vbar_stack(Rates, x='Countries', width=0.9, color=colors, source=data,
-             legend_label=Rates)
 
-# Formattiogn another dictionary for the next plot
+B.vbar(x=dodge('Countries', -0.22, range=B.x_range), top='TotalCases', color = '#FF0000', source=data,
+       width=0.4, legend_label="Total Cases")
+
+B.vbar(x=dodge('Countries',  0.22,  range=B.x_range), top='RecoveredCases', color = '#008000',source=data,
+       width=0.4, legend_label="Recovered Cases")
+
+B.add_tools('xwheel_zoom')
+B.add_tools('xpan')
+
+# Formatting another dictionary for the next plot
 country10 = Countries[0:10]
 tot_cases = []
 tot_recov = []
