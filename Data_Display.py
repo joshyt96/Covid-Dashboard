@@ -306,7 +306,6 @@ tabPlots = Tabs(tabs=[tab1,tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10])
 new_cases = []
 yesterday_new_cases = []
 twodays_new_cases = []
-i = 0
 
 country10 = Countries[0:10]
 
@@ -329,9 +328,7 @@ label=[str(twodays), str(yesterday), str(today)]
 
 T = figure(x_range=label, x_axis_label='Date',
     title="New Cases Results by Country",
-    toolbar_location=None,
-    tools="hover",
-    tooltips="$name: @$name")  
+    toolbar_location=None,)  
 
 USA = T.line(x=[.5, 1.5, 2.5],
                   y=[tdnc[0],ync[0],nc[0]],
@@ -383,19 +380,11 @@ legend2 = Legend(items=[("S. Korea", [S_Korea]),
                         ("Japan", [Japan]),
                         ("Italy", [Italy]),
                         ("UK", [UK]),
-                        ("Russia", [Russia]),
-                        ],
+                        ("Russia", [Russia])],
                  location=(7, 2), orientation="horizontal")
 
 T.add_layout(legend1, 'above')
 T.add_layout(legend2, 'above')
-
-#T.vline_stack(['USA','India','France','Germany','Brazil','S_Korea','Japan','Italy','UK','Russia'], x='x', 
-#    legend_label=country10,
-    #line_color=TColors,
-#    source=source)
-#T.legend.orientation = "horizontal"
-#T.legend.location = "top_right"
 
 grid = gridplot([[B],[S],[tabPlots],[T]])
 show(grid)
