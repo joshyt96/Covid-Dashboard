@@ -27,6 +27,7 @@ today = datetime.date(int(toad[0]),int(toad[1]),int(toad[2]))
 yesterday = datetime.date(int(toad[0]),int(toad[1]),int(toad[2])-1)
 twodays = datetime.date(int(toad[0]),int(toad[1]),int(toad[2])-2)
 
+# Retreive the dictionaries for previous days of data
 f1 = open(f'{today}-table.json')
 Dictionary = json.load(f1)
 f1.close()
@@ -40,6 +41,7 @@ f3.close()
 Countries = list(Dictionary.keys())
 Countries.remove('World')
 
+#Seperate data in teh dictionaries in to smaller lists to be used in different plots
 tot_cases = []
 tot_deaths = []
 tot_recov = []
@@ -75,6 +77,8 @@ data = {'Countries' : Countries,
         'Total Cases'  : tot_cases,
         'Recovered Cases' : tot_recov
         }
+
+# Code that makes the bar graph displaying a small amount of data for the entire world
 B = figure(
     x_range=Countries, 
     height=250,
@@ -91,7 +95,7 @@ colors = ['#FF0000','#008000']
 B.vbar_stack(Rates, x='Countries', width=0.9, color=colors, source=data,
              legend_label=Rates)
 
-
+# Formattiogn another dictionary for the next plot
 country10 = Countries[0:10]
 tot_cases = []
 tot_recov = []
@@ -120,6 +124,7 @@ TOOLTIPS = [("Country","@Country"),
             ("Active Cases","@ActiveCases"),
             ("Total Deaths","@TotalDeaths")]
 
+# Initializing the elements used for top ten plot
 S = figure(x_range=country10, 
            title="Top 10 Countries: click on legend entries to hide the corresponding data",
            height=350, toolbar_location=None, tools="hover", tooltips = TOOLTIPS)
@@ -150,6 +155,7 @@ stat_names = [
     'Test/ 1M Pop'
     ]
 
+# Initializing the elements used for the tabed plots
 USA = figure(
     height=400,
     width = 700,
@@ -325,6 +331,8 @@ source = ColumnDataSource(data=dict(
     Russia =[new_cases[9],yesterday_new_cases[9],twodays_new_cases[9]],
     USA =[new_cases[0],yesterday_new_cases[0],twodays_new_cases[0]]))
 print(country10)
+
+#TColors = ['#5FB3F9','#7ED085','#FEFF00','#FF8D00','#EA5000','#F87E7D','#991310','#000000','#974C00','#9210AD']
 T = figure(x_range=label, x_axis_label='Date',
     title="New Cases Results by Country",
     toolbar_location=None,
