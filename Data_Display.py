@@ -341,6 +341,7 @@ T = figure(x_range=label, x_axis_label='Date',
 
 T.vline_stack(['USA','India','France','Germany','Brazil','S_Korea','Japan','Italy','UK','Russia'], x='x', 
     legend_label=country10,
+    #line_color=TColors,
     source=source)
 #T.legend.orientation = "horizontal"
 #T.legend.location = "top_right"
